@@ -136,6 +136,18 @@ setlistener("/controls/lighting/no-smoking-sign", func {
 	}, 1);
 }, 0, 0);
 
+setlistener("/controls/flight/flap-lever", func {
+	props.globals.getNode("/sim/sounde/flaps-click").setBoolValue(1);
+}, 0, 0);
+
+setlistener("/sim/sounde/flaps-click", func {
+	if (!getprop("/sim/sounde/flaps-click")) {
+		return;
+	}
+	settimer(func {
+		props.globals.getNode("/sim/sounde/flaps-click").setBoolValue(0);
+	}, 0.4);
+});
 #########
 # Doors #
 #########
@@ -205,6 +217,7 @@ var systemsInit = func {
 	rmp.init();
 	acp.init();
 	ecam.ECAM_controller.init();
+	atc.init();
 }
 
 setlistener("/sim/signals/fdm-initialized", func {
